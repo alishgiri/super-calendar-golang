@@ -27,5 +27,5 @@ func Connect() {
 
 	DB = db
 
-	db.AutoMigrate(&models.User{}, &models.CalendarEvent{})
+	db.AutoMigrate(&models.CalendarEvent{})
 }
