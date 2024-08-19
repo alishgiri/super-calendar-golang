@@ -7,6 +7,8 @@ import (
 )
 
 func SetupRoutes(app *fiber.App) {
+	app.Post("/api/holidays", controllers.GetHolidays)
+
 	app.Get("/api/calendar-events", controllers.GetCalEvents)
 	app.Get("/api/calendar-events/:id", controllers.GetCalEventWithId)
 	app.Post("/api/calendar-event", controllers.AddCalEvent)
