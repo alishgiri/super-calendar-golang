@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"strconv"
+	"strings"
 	database "super_calendar/db"
 	"super_calendar/models"
 	"super_calendar/util"
@@ -11,9 +12,12 @@ import (
 )
 
 func GetCalEvents(c *fiber.Ctx) error {
+	userEmail := c.Query("email")
 	var calEvents []models.CalendarEvent
-	if err := database.DB.Find(&calEvents).Error; err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": err})
+	if userEmail != "" {
+		if err := database.DB.Where("email like ?", userEmail).Find(&calEvents).Error; err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": err})
+		}
 	}
 	return c.JSON(calEvents)
 }
@@ -52,6 +56,7 @@ func AddCalEvent(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": validationErr.Error()})
 	}
 
+	payload.Email = strings.ToLower(payload.Email)
 	if err := database.DB.Create(&payload).Error; err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": err})
 	}
