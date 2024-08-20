@@ -57,6 +57,10 @@ func AddCalEvent(c *fiber.Ctx) error {
 	}
 
 	payload.Email = strings.ToLower(payload.Email)
+	if payload.EndDate == nil {
+		payload.EndDate = &payload.StartDate
+	}
+
 	if err := database.DB.Create(&payload).Error; err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": err})
 	}
