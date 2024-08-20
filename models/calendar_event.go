@@ -12,6 +12,7 @@ type CalendarEvent struct {
 	StartDate  time.Time  `json:"start" gorm:"not null" validate:"required"`
 	EndDate    *time.Time `json:"end" gorm:"default:null" validate:"omitempty"`
 	AllDay     *bool      `json:"all_day" gorm:"default:true" validate:"omitempty,boolean"`
+	Notified   *bool      `json:"notified" gorm:"default:false" validate:"omitempty"`
 	Display    *string    `json:"display" gorm:"default:null" validate:"omitempty,min=3,max=60"`
 	ResourceId *int64     `json:"resource_Id" gorm:"type:uint;default:null" validate:"omitempty,number,min=0,max=1000000"`
 }
