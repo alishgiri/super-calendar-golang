@@ -1,6 +1,26 @@
 version: "3.9"
 
 services:
+  app:
+    container_name: super_calendar
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - DATABASE_HOST=${DB_HOST}
+      - DATABASE_PORT=${DB_PORT}
+    tty: true
+    build: .
+    ports:
+      - 8080:8080
+    restart: on-failure
+    volumes:
+      - .:/app
+    depends_on:
+      - postgresdb
+    networks:
+      - super-calendar-network
+
   postgresdb:
     image: postgres:latest
     container_name: postgres_container
@@ -11,3 +31,9 @@ services:
       - DATABASE_HOST=${DB_HOST}
     ports:
       - "5432:5432"
+    networks:
+      - super-calendar-network
+
+networks:
+  super-calendar-network:
+    driver: bridge

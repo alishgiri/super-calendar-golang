@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fmt"
 	"os"
 
 	"super_calendar/models"
@@ -12,12 +13,13 @@ import (
 var DB *gorm.DB
 
 func Connect() {
+	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")
 	dbName := os.Getenv("DB_NAME")
 	password := os.Getenv("DB_PASSWORD")
 
-	dbURL := "postgres://" + user + ":" + password + "@localhost:" + port + "/" + dbName
+	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", user, password, host, port, dbName)
 
 	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 
